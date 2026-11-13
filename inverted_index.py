@@ -108,3 +108,4 @@ class InvertedIndex:
             "total_tokens": total_tokens,
             "average_document_length": average_length
         }
+ 
