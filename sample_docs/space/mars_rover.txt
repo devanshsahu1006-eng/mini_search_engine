@@ -1,0 +1,1 @@
+The rover explores the surface of Mars. It sends photos of rocks back to Earth.
