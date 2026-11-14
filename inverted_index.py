@@ -1,10 +1,10 @@
-
 class InvertedIndex:
     """Build and query a term-to-document inverted index."""
 
     def __init__(self):
-        self.index = {}
-        self.document_lengths = {}
+        self.index = {}              # term -> {doc_id: count}
+        self.document_lengths = {}   # doc_id -> number of tokens
+        self._doc_terms = {}         # doc_id -> set of its unique terms
 
     @staticmethod
     def _validate_document(doc_id, tokens):
@@ -35,24 +35,29 @@ class InvertedIndex:
         if not isinstance(documents, dict):
             raise TypeError("Documents must be a dictionary.")
 
-        # Validate everything before changing the existing index.
+        # Validate first so a bad document can't leave a half-built index.
         for doc_id, tokens in documents.items():
             self._validate_document(doc_id, tokens)
 
         new_index = {}
         new_lengths = {}
+        new_doc_terms = {}
 
         for doc_id, tokens in documents.items():
             new_lengths[doc_id] = len(tokens)
+            new_doc_terms[doc_id] = set(tokens)
             self._add_to_index(new_index, doc_id, tokens)
 
+        # Replace the old data only after everything succeeded.
         self.index = new_index
         self.document_lengths = new_lengths
+        self._doc_terms = new_doc_terms
 
         return self.index
 
     def lookup(self, term):
         """Return document IDs and term frequencies for a term."""
+        # copy so callers can't change the real index
         return self.index.get(term, {}).copy()
 
     def get_document_frequency(self, term):
@@ -68,11 +73,12 @@ class InvertedIndex:
 
         self._validate_document(doc_id, tokens)
 
-        # Remove the old version if the ID already exists.
+        # Remove the old version first if the ID already exists.
         self.remove_document(doc_id)
 
         self._add_to_index(self.index, doc_id, tokens)
         self.document_lengths[doc_id] = len(tokens)
+        self._doc_terms[doc_id] = set(tokens)
 
     def remove_document(self, doc_id):
         """Remove a document and its postings from the index."""
@@ -80,11 +86,12 @@ class InvertedIndex:
         if doc_id not in self.document_lengths:
             return False
 
-        for term in list(self.index):
+        # Only visit this document's own terms, not the whole vocabulary.
+        for term in self._doc_terms.pop(doc_id, ()):
             postings = self.index[term]
             postings.pop(doc_id, None)
 
-            # Remove terms that no longer occur in any document.
+            # Delete terms that no document uses anymore.
             if not postings:
                 del self.index[term]
 
@@ -108,4 +115,3 @@ class InvertedIndex:
             "total_tokens": total_tokens,
             "average_document_length": average_length
         }
- 
