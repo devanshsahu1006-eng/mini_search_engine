@@ -115,14 +115,14 @@ Run `python profile_run.py` to see the full output, including the larger sizes.
 
 ## Team
 
-| Role | Member | GitHub |
-|------|--------|--------|
-| P1 - file loading, test data | Devansh | devanshsahu1006-eng |
-| P2 - tokenizer, Bash wrapper | Suzane | suzane-jazinth |
-| P3 - inverted index, profiling | Sarthak | Sarthak-2408 |
-| P4 - ranking, main program | Rhithick | BlazingFlames64 |
-| P5 - README, evaluation | Divyansh Sahu | divyanshsahu77805-star |
-| Presentation (LaTeX / Beamer) | Haseeb | - |
+| Role | Member | GitHub | Institute ID |
+|------|--------|--------|--------------|
+| P1 - file loading, test data | Devansh | devanshsahu1006-eng | CS25BT023 |
+| P2 - tokenizer, Bash wrapper | Suzane | suzane-jazinth | CS25BT035 |
+| P3 - inverted index, profiling | Sarthak | Sarthak-2408 | MC25BT026 |
+| P4 - ranking, main program | Rhithick | BlazingFlames64 | MC25BT016 |
+| P5 - README, evaluation | Divyansh | divyanshsahu77805-star | MC25BT017 |
+| Presentation (LaTeX / Beamer) | Haseeb | dominator5127-beep | MC25BT009 |
 
 Everyone worked on a feature branch (`feature/loader`, `feature/tokenizer`,
 `feature/index`, `feature/ranker`) and merged it into `main`.
