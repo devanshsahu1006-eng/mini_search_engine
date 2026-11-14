@@ -13,7 +13,7 @@ class Tokenizer:
     # Very common words that appear everywhere and carry no meaning for search.
     STOP_WORDS = frozenset("""
         a an and are as at be been but by can did do does for from had has
-        have he her his i if in into is it its me my no not of on or our she
+        have he her his i if in into is it its me my of on or our she
         so than that the their them then there these they this to too us was
         we were what when where which who will with you your
     """.split())

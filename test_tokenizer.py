@@ -27,6 +27,8 @@ class TestTokenizer(unittest.TestCase):
             tokenizer.tokenize("The rocket is ready"),
             ["the", "rocket", "is", "ready"]
         )
+    def test_query_of_only_stop_words_is_empty(self):
+        self.assertEqual(self.tokenizer.tokenize("the and is"), [])
 
     def test_numbers_are_kept(self):
         self.assertEqual(

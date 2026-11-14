@@ -2,20 +2,22 @@
 # P2: Bash wrapper for the mini search engine.
 #
 # Usage:
-#   ./search.sh -d <folder> "<query>"   search the .txt files in <folder>
+#   ./search.sh "<query>"               search every folder in the current directory
+#   ./search.sh -d <folder> "<query>"   search only <folder>
 #   ./search.sh -h                      show this help
 
 set -euo pipefail
 
-cd "$(dirname "$0")"           # run from the project folder
+SCRIPT_DIR="$(dirname "$0")"   # where main.py lives
 
 usage() {
     echo "Usage:"
-    echo "  ./search.sh -d <folder> \"<query>\"   search the .txt files in <folder>"
+    echo "  ./search.sh \"<query>\"               search every folder in the current directory"
+    echo "  ./search.sh -d <folder> \"<query>\"   search only <folder>"
     echo "  ./search.sh -h                      show this help"
 }
 
-DOCS_DIR=""
+DOCS_DIR="."                   # default: the current directory
 
 while getopts ":d:h" option; do
     case "$option" in
@@ -26,12 +28,6 @@ while getopts ":d:h" option; do
     esac
 done
 shift $((OPTIND - 1))          # what is left is the query
-
-if [ -z "$DOCS_DIR" ]; then
-    echo "Error: no folder given. Use -d <folder>." >&2
-    usage
-    exit 1
-fi
 
 if [ $# -eq 0 ]; then
     echo "Error: no search query given." >&2
@@ -46,10 +42,10 @@ if [ ! -d "$DOCS_DIR" ]; then
     exit 1
 fi
 
-if [ ! -f main.py ]; then
+if [ ! -f "$SCRIPT_DIR/main.py" ]; then
     echo "Error: main.py not found." >&2
     exit 1
 fi
 
 echo "Searching '$DOCS_DIR' for: $QUERY"
-python main.py "$DOCS_DIR" "$QUERY"
+python "$SCRIPT_DIR/main.py" "$DOCS_DIR" "$QUERY"
